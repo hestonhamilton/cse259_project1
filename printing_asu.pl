@@ -71,7 +71,39 @@ drawA(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
 /* WRITE RULES FOR drawU HERE*/
 /*-------------------------------------------------------------------------------------------------*/
 
+/* draw U */
+drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+  ColumnNumber >= TextWidth.
 
+/* 
+ * Covers the left-most and the right-most columns that only have stars 
+ */
+drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+  (
+    (ColumnNumber >= 0, ColumnNumber < FontSize);
+    (ColumnNumber >= FontSize * 2, ColumnNumber < TextWidth )
+  ),
+  drawSymbol('*', FontSize),
+  NextColumn is ColumnNumber + FontSize,
+  drawU(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
+
+
+/* 
+ * Covers the middle segment with spaces
+ * Fills bottom with stars 
+ */
+drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+  CurrentLine > TextHeight - FontSize - 1,
+  drawSymbol('*', FontSize),
+  NextColumn is ColumnNumber + FontSize,
+  drawU(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
+
+drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+  (ColumnNumber >= FontSize, ColumnNumber < FontSize * 2),
+  drawSymbol(' ', FontSize),
+  NextColumn is ColumnNumber + FontSize,
+  drawU(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
+/* draw U */
 
 /* draw the text with appropriate spacing*/
 draw(LeftRightMargin, SpaceBetweenCharacters, FontSize, CurrentLine, TextWidth, TextHeight) :-
@@ -84,9 +116,13 @@ draw(LeftRightMargin, SpaceBetweenCharacters, FontSize, CurrentLine, TextWidth, 
   /*---------------------------------------------*/
   /** CALL YOUR RULES HERE **/
   % add spaces here between A and S
+  drawSymbol(' ', SpaceBetweenCharacters),
   % call drawS
+  drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber),
   % add spaces here between S and U
+  drawSymbol(' ', SpaceBetweenCharacters),
   % call drawU
+  drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber),
   /*---------------------------------------------*/
   drawSymbol(' ', LeftRightMargin),
   write('|'),
