@@ -65,6 +65,49 @@ drawA(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
 
 /*-------------------------------------------------------------------------------------------------*/
 /* WRITE RULES FOR drawS HERE*/
+drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+  ColumnNumber >= TextWidth.
+
+/* Draw top and bottom horizontal lines of S */
+drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+  (
+    (CurrentLine >= 0, CurrentLine < FontSize);
+    (CurrentLine >= TextHeight - FontSize, CurrentLine < TextHeight)
+  ),
+  drawSymbol('*', FontSize),
+  NextColumn is ColumnNumber + FontSize,
+  drawS(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
+
+/* Draw the middle horizontal line of S */
+drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+  CurrentLine >= FontSize * 2, CurrentLine < FontSize * 3,
+  drawSymbol('*', FontSize),
+  NextColumn is ColumnNumber + FontSize,
+  drawS(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
+
+/* Draw the vertical left side of S (top part) */
+drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+  CurrentLine >= FontSize, CurrentLine < FontSize * 2,
+  ColumnNumber >= 0, ColumnNumber < TextWidth,
+  (
+    ColumnNumber < FontSize         
+    -> drawSymbol('*', FontSize)
+    ;  drawSymbol(' ', FontSize)    
+  ),
+  NextColumn is ColumnNumber + FontSize,
+  drawS(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
+
+/* Draw the vertical right side of S (bottom part) */
+drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+  CurrentLine >= FontSize * 3, CurrentLine < FontSize * 4,
+  ColumnNumber >= 0, ColumnNumber < TextWidth, 
+  (
+    ColumnNumber < TextWidth - FontSize   
+    -> drawSymbol(' ', FontSize)
+    ;  drawSymbol('*', FontSize)          
+  ),
+  NextColumn is ColumnNumber + FontSize,
+  drawS(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
 /*-------------------------------------------------------------------------------------------------*/
 
 /*-------------------------------------------------------------------------------------------------*/
@@ -84,7 +127,9 @@ draw(LeftRightMargin, SpaceBetweenCharacters, FontSize, CurrentLine, TextWidth, 
   /*---------------------------------------------*/
   /** CALL YOUR RULES HERE **/
   % add spaces here between A and S
+  drawSymbol(' ', SpaceBetweenCharacters),
   % call drawS
+  drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber),
   % add spaces here between S and U
   % call drawU
   /*---------------------------------------------*/
