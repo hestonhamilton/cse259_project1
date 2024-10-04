@@ -189,6 +189,14 @@ asu(LeftRightMargin, BottomTopMargin, SpaceBetweenCharacters, FontSize) :-
   /* verify that the variables are integers */
   integer(LeftRightMargin), integer(BottomTopMargin), integer(SpaceBetweenCharacters), integer(FontSize),
 
+  /* check that variables are non-negative */
+  LeftRightMargin >= 0, BottomTopMargin >= 0, SpaceBetweenCharacters >= 0, FontSize >= 0,
+
+  /* check that FontSize is greater than 0 */
+  FontSize > 0,
+
+  /* proceed only after all checks are passed */
+
   /* calculate the height and width */
   Width is (LeftRightMargin * 2 + SpaceBetweenCharacters * 2 + FontSize * 3 * 3 + 2),
   Height is (BottomTopMargin * 2 + FontSize * 5),
