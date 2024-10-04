@@ -190,7 +190,7 @@ asu(LeftRightMargin, BottomTopMargin, SpaceBetweenCharacters, FontSize) :-
   integer(LeftRightMargin), integer(BottomTopMargin), integer(SpaceBetweenCharacters), integer(FontSize),
 
   /* check that variables are non-negative */
-  LeftRightMargin >= 0, BottomTopMargin >= 0, SpaceBetweenCharacters >= 0, FontSize >= 0,
+  LeftRightMargin >= 0, BottomTopMargin >= 0, SpaceBetweenCharacters >= 0,
 
   /* check that FontSize is greater than 0 */
   FontSize > 0,
